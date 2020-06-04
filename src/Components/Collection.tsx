@@ -1,4 +1,5 @@
 ﻿import React, { useState } from 'react';
+import { classNames } from '../Util/classNames';
 
 export interface CollectionProps<T> {
 	data: T[];
@@ -9,9 +10,10 @@ export interface CollectionProps<T> {
 	}[];
 	rowKey?: (item: T) => string | number;
 	expandList?: (item: T) => React.ReactNode;
+	className?: string;
 }
 
-export function Collection<T>({ columns, data, expandList, rowKey }: CollectionProps<T>) {
+export function Collection<T>({ className, columns, data, expandList, rowKey }: CollectionProps<T>) {
 	const [expandedRows, setExpandedRows] = useState<(string | number)[]>([]);
 
 	const toggleRow = (rowKey: string | number) => () => {
@@ -26,12 +28,13 @@ export function Collection<T>({ columns, data, expandList, rowKey }: CollectionP
 	}
 
 	return (
-		<table>
+		<table className={classNames('pure-table', className)}>
 			<thead>
 			<tr>
 				{columns.map(c => (
 					<th key={c.headerKey ?? c.title}>{c.title}</th>
 				))}
+				{expandList ? <th key="expand"/> : undefined}
 			</tr>
 			</thead>
 			<tbody>
@@ -53,7 +56,7 @@ export function Collection<T>({ columns, data, expandList, rowKey }: CollectionP
 						</tr>
 						{expandList && expandedRows.indexOf(key) > -1
 							? <tr>
-								<td colSpan={columns.length}>{expandList(d)}</td>
+								<td colSpan={columns.length + 1}>{expandList(d)}</td>
 							</tr>
 							: undefined}
 					</React.Fragment>

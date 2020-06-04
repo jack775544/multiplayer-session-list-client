@@ -71,6 +71,7 @@ export interface Attributes {
 
 export interface Session {
 	Name: string;
+	Message?: string;
 	PlayerCount: number;
 	PlayerMax: number;
 	Level: Level;

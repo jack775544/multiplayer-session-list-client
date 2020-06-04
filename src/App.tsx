@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import { SessionList } from './Components/SessionList';
 
 function App() {
