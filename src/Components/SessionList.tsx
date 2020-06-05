@@ -2,11 +2,23 @@
 import '../Style/session-list.css'
 import { useFetch } from '../Util/useFetch';
 import { Session, SessionResponse } from '../Models/Session';
-import { Collection } from '../Components/Collection';
 import { toKeyValueList } from '../Util/toKeyValueList';
+import { Collection } from './Generic/Collection';
 
-export function SessionList() {
-	const { loading, error, data } = useFetch<SessionResponse>('https://localhost:6001/api/sessions?game=iondriver:raknetmaster2:bzcc');
+export interface SessionListProps {
+	gameId?: string;
+}
+//
+export function SessionList(props: SessionListProps) {
+	const url = props.gameId
+		? `https://localhost:6001/api/sessions?game=${props.gameId}`
+		: '';
+		
+	const { loading, error, data } = useFetch<SessionResponse>(url);
+	
+	if (!props.gameId) {
+		return <div>Please select a game</div>;
+	}
 
 	if (loading) {
 		return <div>Loading...</div>;
@@ -30,7 +42,7 @@ export function SessionList() {
 					{ title: 'Status', field: d => d.Status.State },
 					{ title: 'Level', field: d => `${d.Level.GameMode} - ${d.Level.MapFile}` },
 				]}
-				expandList={sessionData => <SessionData sessionData={sessionData} />}
+				expandList={sessionData => <SessionData sessionData={sessionData}/>}
 			/>
 		);
 	}
@@ -38,15 +50,15 @@ export function SessionList() {
 	return <></>;
 }
 
-export function SessionData({ sessionData }: {sessionData: Session}) {
+export function SessionData({ sessionData }: { sessionData: Session }) {
 	return (
 		<div>
 			<h3>Game Information</h3>
 			<Collection
 				data={toKeyValueList(sessionData.Attributes).filter(d => typeof d.value !== 'object')}
 				columns={[
-					{title: 'Key', field: d => d.key},
-					{title: 'Value', field: d => d.value},
+					{ title: 'Key', field: d => d.key },
+					{ title: 'Value', field: d => d.value },
 				]}
 			/>
 

@@ -6,13 +6,20 @@ export function useFetch<T = any, E = any>(input: RequestInfo, init?: RequestIni
 	const [data, setData] = useState<T>();
 
 	useEffect(() => {
+		if (input === '') {
+			return;
+		}
+
 		fetch(input, init)
 			.then(r => r.json())
 			.then(d => {
 				setLoading(false);
 				setData(d);
 			})
-			.catch(setError);
+			.catch(e => {
+				setLoading(false);
+				setError(e);
+			});
 	}, [input, init]);
 
 	return { loading, error, data };

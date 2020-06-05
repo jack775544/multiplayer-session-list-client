@@ -1,5 +1,5 @@
 ﻿import React, { useState } from 'react';
-import { classNames } from '../Util/classNames';
+import { classNames } from '../../Util/classNames';
 
 export interface CollectionProps<T> {
 	data: T[];

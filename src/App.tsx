@@ -1,5 +1,5 @@
 import React from 'react';
-import { SessionList } from './Components/SessionList';
+import { GameSessions } from './Components/GameSessions';
 
 function App() {
 	return (
@@ -7,7 +7,7 @@ function App() {
 			<header>
 				<h1>Battlezone Session List</h1>
 			</header>
-			<SessionList />
+			<GameSessions />
 		</div>
 	);
 }
